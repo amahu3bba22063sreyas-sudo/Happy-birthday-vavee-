@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy Birthday Vavsieee! 💗</title>
+  <style>
+    :root {
+      --bg-color: #fff5f6;
+      --card-bg: #ffffff;
+      --accent-color: #fca5a5;
+      --text-main: #5c3d46;
+      --btn-bg: #f472b6;
+      --btn-hover: #ec4899;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Confetti Canvas Overlay */
+    #confettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    /* Floating Hearts Background */
+    .bg-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .heart-particle {
+      position: absolute;
+      color: rgba(251, 113, 133, 0.25);
+      font-size: 1.2rem;
+      animation: floatUp 8s infinite linear;
+      user-select: none;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) scale(0.8);
+        opacity: 0;
+      }
+      20% { opacity: 0.8; }
+      80% { opacity: 0.8; }
+      100% {
+        transform: translateY(-10vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* Card Container */
+    .container {
+      width: 100%;
+      max-width: 420px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-card {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      background: var(--card-bg);
+      padding: 28px 20px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(244, 114, 182, 0.12);
+      border: 1px solid rgba(252, 165, 165, 0.2);
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .step-card.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Typography & Buttons */
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #9d174d;
+      line-height: 1.3;
+    }
+
+    p {
+      font-size: 1.05rem;
+      color: #704b56;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .btn {
+      background-color: var(--btn-bg);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(244, 114, 182, 0.35);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+      box-shadow: 0 2px 8px rgba(244, 114, 182, 0.2);
+    }
+
+    /* Step 2, 4, 5 Image Displays */
+    .user-image {
+      width: 100%;
+      max-height: 65vh;
+      object-fit: contain;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .scrollable-image-container {
+      width: 100%;
+      max-height: 60vh;
+      overflow-y: auto;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid rgba(252, 165, 165, 0.3);
+    }
+
+    .scrollable-image-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Interactive Cake Styling */
+    .cake-container {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      margin: 20px 0 25px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+
+    .cake {
+      width: 160px;
+      height: 100px;
+      background: #4a2c2a;
+      border-radius: 12px 12px 6px 6px;
+      position: relative;
+      box-shadow: inset 0 -10px 0 #36201e;
+    }
+
+    .frosting {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      background: #fbcfe8;
+      border-radius: 12px 12px 10px 10px;
+    }
+
+    .frosting::after {
+      content: '';
+      position: absolute;
+      top: 25px;
+      left: 0;
+      width: 100%;
+      height: 12px;
+      background: radial-gradient(circle, #fbcfe8 60%, transparent 65%);
+      background-size: 20px 20px;
+    }
+
+    .candle {
+      width: 12px;
+      height: 45px;
+      background: repeating-linear-gradient(45deg, #fb7185, #fb7185 5px, #ffffff 5px, #ffffff 10px);
+      position: absolute;
+      top: -45px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 3px 3px 0 0;
+      cursor: pointer;
+    }
+
+    .wick {
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 6px;
+      background: #222;
+    }
+
+    .flame {
+      position: absolute;
+      top: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 20px;
+      background: #ff9800;
+      border-radius: 50% 50% 20% 20%;
+      box-shadow: 0 0 12px #ff9800, 0 0 25px #ff5722;
+      animation: flicker 0.2s infinite alternate ease-in-out;
+      cursor: pointer;
+      transition: opacity 0.5s ease;
+    }
+
+    .flame.out {
+      opacity: 0;
+      animation: none;
+      pointer-events: none;
+    }
+
+    .smoke {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      background: rgba(150, 150, 150, 0.6);
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .smoke.active {
+      animation: rise 1.5s forwards ease-out;
+    }
+
+    @keyframes flicker {
+      0% { transform: translateX(-50%) scale(1) rotate(-1deg); }
+      100% { transform: translateX(-50%) scale(1.1) rotate(1deg); }
+    }
+
+    @keyframes rise {
+      0% { opacity: 0.8; transform: translateX(-50%) translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateX(-60%) translateY(-30px) scale(3); }
+    }
+
+    .mic-status {
+      font-size: 0.85rem;
+      color: #9d174d;
+      margin-top: 8px;
+      min-height: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Hearts Background -->
+  <div class="bg-hearts" id="heartsContainer"></div>
+  
+  <!-- Canvas overlay for candle blowout celebration -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <div class="container">
+
+    <!-- STEP 1: Opening Screen -->
+    <div class="step-card active" id="step1">
+      <h1>Happy birthday vavsieee😚🧸</h1>
+      <p>here is a little gift for you</p>
+      <button class="btn" onclick="nextStep(2)">Open your little gift 🎁</button>
+    </div>
+
+    <!-- STEP 2: Bouquet -->
+    <div class="step-card" id="step2">
+      <img src="IMG_20260929_060444.jpg" alt="Handmade Bouquet" class="user-image" />
+      <button class="btn" onclick="nextStep(3)">There's one more thing 🎂</button>
+    </div>
+
+    <!-- STEP 3: Cake & Candle -->
+    <div class="step-card" id="step3">
+      <h1 id="cakeHeader">Make a wish, Vavsie 🎂</h1>
+      
+      <div class="cake-container">
+        <div class="cake">
+          <div class="frosting"></div>
+          <div class="candle" onclick="extinguishCandle()">
+            <div class="wick"></div>
+            <div class="flame" id="flame" onclick="extinguishCandle()"></div>
+            <div class="smoke" id="smoke"></div>
+          </div>
+        </div>
+      </div>
+
+      <p id="cakeInstruction" style="font-size: 0.9rem;">
+        Blow into your microphone or tap the flame! 🔥
+      </p>
+
+      <button class="btn" id="micBtn" onclick="initMic()">Start microphone 🎤</button>
+      <div class="mic-status" id="micStatus"></div>
+
+      <button class="btn" id="cakeNextBtn" onclick="nextStep(4)" style="display: none; margin-top: 15px;">
+        Read your letter 💌
+      </button>
+    </div>
+
+    <!-- STEP 4: Personal Letter -->
+    <div class="step-card" id="step4">
+      <div class="scrollable-image-container">
+        <img src="IMG_20260929_060825.jpg" alt="Personal Birthday Letter" />
+      </div>
+      <button class="btn" onclick="nextStep(5)">One last thing... 💌</button>
+    </div>
+
+    <!-- STEP 5: Final Envelope -->
+    <div class="step-card" id="step5">
+      <img src="IMG_20260929_060023.jpg" alt="Envelope from Sreyas to Ananyaa" class="user-image" />
+      <p style="margin-top: 10px; font-weight: 600; color: #9d174d;">Forever & always ❤️</p>
+    </div>
+
+  </div>
+
+  <script>
+    // Create floating heart background particles
+    const heartsContainer = document.getElementById('heartsContainer');
+    const heartSymbols = ['💗', '🌸', '✨', '🧸'];
+    
+    for (let i = 0; i < 18; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'heart-particle';
+      heart.innerText = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+      heart.style.left = `${Math.random() * 100}%`;
+      heart.style.animationDelay = `${Math.random() * 8}s`;
+      heart.style.animationDuration = `${6 + Math.random() * 4}s`;
+      heartsContainer.appendChild(heart);
+    }
+
+    // Step Switching Logic
+    function nextStep(stepNumber) {
+      document.querySelectorAll('.step-card').forEach(card => {
+        card.classList.remove('active');
+      });
+      const currentCard = document.getElementById(`step${stepNumber}`);
+      currentCard.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Lightweight Confetti Particle Animation
+    function triggerConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#f472b6', '#fb7185', '#fca5a5', '#fbcfe8', '#ffd1dc'];
+
+      for (let i = 0; i < 40; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          vx: (Math.random() - 0.5) * 12,
+          vy: (Math.random() - 0.7) * 14,
+          size: Math.random() * 8 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1
+        });
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let active = false;
+
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.25; // Gravity
+          p.alpha -= 0.015;
+
+          if (p.alpha > 0) {
+            active = true;
+            ctx.globalAlpha = Math.max(p.alpha, 0);
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        });
+
+        if (active) {
+          requestAnimationFrame(render);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+
+      render();
+    }
+
+    // Candle Blowing Logic
+    let isBlownOut = false;
+    let audioContext, analyser, microphone, stream;
+
+    function extinguishCandle() {
+      if (isBlownOut) return;
+      isBlownOut = true;
+
+      const flame = document.getElementById('flame');
+      const smoke = document.getElementById('smoke');
+      const cakeHeader = document.getElementById('cakeHeader');
+      const cakeInstruction = document.getElementById('cakeInstruction');
+      const micBtn = document.getElementById('micBtn');
+      const micStatus = document.getElementById('micStatus');
+      const cakeNextBtn = document.getElementById('cakeNextBtn');
+
+      flame.classList.add('out');
+      smoke.classList.add('active');
+
+      cakeHeader.innerText = "✨ Wish made! Happy 22nd, Vavsieee! 💗";
+      cakeInstruction.style.display = "none";
+      micBtn.style.display = "none";
+      micStatus.style.display = "none";
+      cakeNextBtn.style.display = "inline-flex";
+
+      triggerConfetti();
+
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    }
+
+    async function initMic() {
+      const micStatus = document.getElementById('micStatus');
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Handle iOS / browser audio context state
+        if (audioContext.state === 'suspended') {
+          await audioContext.resume();
+        }
+
+        analyser = audioContext.createAnalyser();
+        microphone = audioContext.createMediaStreamSource(stream);
+        
+        analyser.fftSize = 256;
+        microphone.connect(analyser);
+
+        micStatus.innerText = "Listening... Blow into the mic now! 🌬️";
+        detectBlow();
+      } catch (err) {
+        micStatus.innerText = "Mic unavailable. Simply tap the flame! 🔥";
+      }
+    }
+
+    function detectBlow() {
+      if (isBlownOut) return;
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      analyser.getByteFrequencyData(dataArray);
+
+      let sum = 0;
+      for (let i = 0; i < bufferLength; i++) {
+        sum += dataArray[i];
+      }
+      let average = sum / bufferLength;
+
+      if (average > 45) { // Sensitivity threshold for blowing
+        extinguishCandle();
+      } else {
+        requestAnimationFrame(detectBlow);
+      }
+    }
+  </script>
+</body>
+</html>
